@@ -25,23 +25,16 @@ type Fallback func(v any) *string
 
 // Config defines the formatting rules for data-to-string conversion.
 type Config struct {
-	Null           string // String representation for nil/null values
-	BoolTrue       string // String representation for true
-	BoolFalse      string // String representation for false
-	DateOnlyFormat string // Format for dates (e.g., "2006-01-02")
-	DateTimeFormat string // Format for timestamps
-	TimeOnlyFormat string // Format for time values
-	// DecimalSeparator is the character used as a decimal point in floating-point
-	// numbers. If set to a non-empty value other than ".", the library will
-	// replace the default dot with this character.
-	// Useful for localized CSV exports that need to be opened in Excel.
-	DecimalSeparator string
-	MaxStringLength  int      // Max length before truncation with ellipsis
-	OnFallback       Fallback // Custom handler for unknown types
-	// Logger is an optional structured logger. If provided, the library will
-	// log a Warning when an unrecognized type is encountered for the first time.
-	Logger *slog.Logger
-
+	Null             string       // String representation for nil/null values
+	BoolTrue         string       // String representation for true
+	BoolFalse        string       // String representation for false
+	DateOnlyFormat   string       // Format for dates (e.g., "2006-01-02")
+	DateTimeFormat   string       // Format for timestamps
+	TimeOnlyFormat   string       // Format for time values
+	DecimalSeparator string       // Character used as a decimal point in floating-point numbers
+	MaxStringLength  int          // Max length before truncation with ellipsis
+	OnFallback       Fallback     // Custom handler for unknown types
+	Logger           *slog.Logger // Optional structured logger
 	// unknownTypes stores encountered types that have no explicit handling.
 	unknownTypes atomic.Pointer[sync.Map]
 	_            noCopy
