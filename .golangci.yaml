@@ -1,0 +1,85 @@
+version: "2"
+linters:
+  default: all
+  disable:
+    - depguard
+    - exhaustruct
+    - gochecknoglobals
+    - goconst
+    - gomodguard # deprecated
+    - mnd
+    - paralleltest
+    - testableexamples
+    - wsl # deprecated
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    rules:
+      - path: (.+)\.go$
+        text: do not define dynamic errors
+      - path: _test\.go
+        linters:
+          - funlen
+          - varnamelen
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+  settings:
+    sloglint:
+      context: "all"
+      attr-only: true
+      static-msg: true
+      msg-style: lowercased
+      key-naming-case: snake
+      args-on-sep-lines: true
+    nlreturn:
+      block-size: 2
+    ireturn:
+      allow:
+        - anon
+        - error
+        - empty
+        - stdlib
+        - connectrpc.com\/connect.Interceptor
+    varnamelen:
+      ignore-decls:
+        - w http.ResponseWriter
+        - w io.Writer
+        - r *http.Request
+        - f *os.File
+formatters:
+  enable:
+    - goimports
+    - gofumpt
+    - gofmt
+    - golines
+  settings:
+    goimports:
+      local-prefixes:
+        - github.com/mdigger/
+    gofmt:
+      simplify: true
+      rewrite-rules:
+        - pattern: 'interface{}'
+          replacement: 'any'
+    gofumpt:
+      module-path: github.com/mdigger/
+      extra-rules: true  
+    golines:
+      max-len: 120
+      tab-len: 4
+      shorten-comments: true
+      reformat-tags: true
+      chain-split-dots: true
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+      - api$
