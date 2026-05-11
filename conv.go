@@ -20,7 +20,7 @@ import (
 )
 
 // Fallback defines a function called when the converter doesn't recognize a type.
-// If it returns nil, the result defaults to [Config.Null].
+// If it returns nil, the result defaults to Null.
 type Fallback func(v any) *string
 
 // Config defines the formatting rules for data-to-string conversion.
@@ -231,7 +231,7 @@ func (cfg *Config) Format(val any) string { //nolint:gocognit,gocyclo,cyclop,fun
 	}
 }
 
-// String checks max allowed string length [Config.MaxStringLength] and truncates if exceeded.
+// String checks max allowed string length MaxStringLength and truncates if exceeded.
 func (cfg *Config) String(val string) string {
 	if cfg.MaxStringLength <= 0 || len(val) <= cfg.MaxStringLength {
 		return val
@@ -276,7 +276,7 @@ func (cfg *Config) Uint(val uint64) string {
 	return strconv.FormatUint(val, 10)
 }
 
-// Float formats a float (32 or 64 bit). Returns [Config.Null] for NaN/Inf.
+// Float formats a float (32 or 64 bit). Returns Null for NaN/Inf.
 // It handles both types via float64 but keeps precision consistent.
 func (cfg *Config) Float(val float64) string {
 	if math.IsNaN(val) || math.IsInf(val, 0) {
@@ -291,7 +291,7 @@ func (cfg *Config) Float(val float64) string {
 	return str
 }
 
-// DateTime formats [time.Time] using [Config.DateTimeFormat] or [time.DateTime].
+// DateTime formats [time.Time] using DateTimeFormat or [time.DateTime].
 func (cfg *Config) DateTime(val time.Time) string {
 	if val.IsZero() {
 		return cfg.Null
@@ -305,7 +305,7 @@ func (cfg *Config) DateTime(val time.Time) string {
 	return val.Local().Format(layout) //nolint:gosmopolitan
 }
 
-// Time formats [pgtype.Time] using [Config.TimeOnlyFormat] or [time.TimeOnly].
+// Time formats [pgtype.Time] using TimeOnlyFormat or [time.TimeOnly].
 func (cfg *Config) Time(val pgtype.Time) string {
 	if !val.Valid {
 		return cfg.Null
@@ -321,7 +321,7 @@ func (cfg *Config) Time(val pgtype.Time) string {
 	return timeVal.Format(layout)
 }
 
-// Date formats [pgtype.Date] using [Config.DateOnlyFormat] or [time.DateOnly].
+// Date formats [pgtype.Date] using DateOnlyFormat or [time.DateOnly].
 func (cfg *Config) Date(val pgtype.Date) string {
 	if !val.Valid || val.InfinityModifier != pgtype.Finite {
 		return cfg.Null
@@ -440,7 +440,7 @@ func (cfg *Config) GetUnknownTypes() []string {
 	return list
 }
 
-// fallback handles complex or unknown types. If a [Config.Logger] is set, it logs
+// fallback handles complex or unknown types. If a Logger is set, it logs
 // a warning for the first occurrence of each unique unrecognized type.
 func (cfg *Config) fallback(val any) string {
 	t := reflect.TypeOf(val)
